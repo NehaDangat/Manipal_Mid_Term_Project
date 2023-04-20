@@ -1,0 +1,87 @@
+package com.hdfc.cilinOPD.Doctor.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.hdfc.cilinOPD.Doctor.DTO.DoctorDTO;
+import com.hdfc.cilinOPD.Doctor.VO.Appointment;
+import com.hdfc.cilinOPD.Doctor.entity.Doctor;
+import com.hdfc.cilinOPD.Doctor.exception.DoctorIDNotFound;
+import com.hdfc.cilinOPD.Doctor.repository.DoctorRepository;
+
+@Service
+public class DoctorServiceImp implements IDoctorService {
+
+	@Autowired
+	DoctorRepository repo;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Override
+	public Doctor addDoctor(DoctorDTO Ddto) {
+		
+		
+		Doctor doctor = new Doctor();
+	
+		doctor.setDocotrId(Ddto.getDoctorId());
+		doctor.setFirstName(Ddto.getFirstName());
+		doctor.setLastName(Ddto.getLastName());
+		doctor.setContact(Ddto.getContact());
+		doctor.setSpecialization(Ddto.getSpecialization());
+		
+		
+		return repo.save(doctor);
+	}
+
+	@Override
+	public Doctor updateDoctor(Doctor Ddto) throws DoctorIDNotFound {
+		
+		Optional<Doctor> opt = repo.findById(Ddto.getDocotrId());
+		
+		if(opt.isPresent()){
+			
+			return repo.save(Ddto);
+		} else {
+			
+			throw new DoctorIDNotFound();
+		}
+
+	}
+
+	@Override
+	public void deleteByDoctorId(long doctorId) {
+		
+		repo.deleteById(doctorId);
+		
+	}
+
+	@Override
+	public  Doctor getByDoctorId(long doctorId) {
+		
+		return repo.findById(doctorId).orElse(null);
+	}
+
+	@Override
+	public List<Doctor> getAll() {
+		
+		return repo.findAll();
+	}
+
+	@Override
+	public List<Appointment> myAppointments(long doctorId) {
+		
+		Doctor doctor = getByDoctorId(doctorId);
+		
+		long doctorId1 = doctor.getDocotrId();
+		
+		List<Appointment> appointments = restTemplate.getForObject("http://localhost:2003/api/appointment/"+doctorId1,List.class);
+		
+		return appointments;
+	}
+ 
+}

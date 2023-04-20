@@ -1,0 +1,48 @@
+package com.hdfc.cilinOPD.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Entity.Appointment;
+import com.hdfc.cilinOPD.Entity.Doctor;
+import com.hdfc.cilinOPD.Entity.Patient;
+import com.hdfc.cilinOPD.repository.AppointmentRepository;
+import com.hdfc.cilinOPD.repository.DoctorRepository;
+import com.hdfc.cilinOPD.repository.PatientRepository;
+
+@Service
+ public class AppointmentIMPService implements IAppointmentService {
+
+	@Autowired
+    private DoctorRepository doctorRepository;
+    
+    @Autowired
+    private PatientRepository patientRepository;
+    
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+    
+	
+	
+	@Override
+	public List<Appointment> getAvailableAppointments(Doctor doctor, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return appointmentRepository.findByDoctorAndDateTimeBetween(doctor, startDateTime, endDateTime);
+    }
+
+
+
+	@Override
+	public Appointment bookAppointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime) {
+		
+		Appointment appointment = new Appointment();
+		
+        appointment.setDoctor(doctor);
+        appointment.setPatient(patient);
+        
+        appointmentRepository.save(appointment);
+	}
+
+}

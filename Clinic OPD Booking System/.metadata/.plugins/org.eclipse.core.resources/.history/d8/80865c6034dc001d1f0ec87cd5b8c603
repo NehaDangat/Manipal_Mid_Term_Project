@@ -1,0 +1,13 @@
+package com.hdfc.cilinOPD;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ClinicOpdBookingSystemApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ClinicOpdBookingSystemApplication.class, args);
+	}
+
+}

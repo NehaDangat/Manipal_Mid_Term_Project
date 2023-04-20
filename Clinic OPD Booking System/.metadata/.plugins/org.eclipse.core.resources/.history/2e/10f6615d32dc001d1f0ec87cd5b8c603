@@ -1,0 +1,31 @@
+package com.hdfc.cilinOPD.appointments.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.appointments.DTO.AppointmentDTO;
+import com.hdfc.cilinOPD.appointments.entity.Appointment;
+import com.hdfc.cilinOPD.appointments.repository.AppointmentRepository;
+
+@Service
+public class AppointmentIMPService implements IAppointmentService{
+
+	@Autowired
+	AppointmentRepository repo;
+	
+	@Override
+	public Appointment bookAppointment( AppointmentDTO Adto) {
+		
+		Appointment appointment = new Appointment();
+		
+		appointment.setAppointmentId(Adto.getAppointmentId());
+		appointment.setPatientId(Adto.getPatientId());
+		appointment.setDoctorId(Adto.getDoctorId());
+		appointment.setDate(Adto.getDate());
+		appointment.setTime(Adto.getTime());
+		appointment.setSatus(Adto.getSatus());
+		
+		return repo.save(Adto);
+	}
+
+}

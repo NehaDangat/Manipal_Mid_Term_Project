@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.Reminder.DTO;
+
+public class ReminderDTO {
+
+}

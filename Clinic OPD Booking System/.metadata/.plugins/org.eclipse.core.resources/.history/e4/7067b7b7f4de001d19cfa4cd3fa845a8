@@ -1,0 +1,20 @@
+package com.hdfc.cilinOPD.Schedule.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.DTO.ScheduleDTO;
+import com.hdfc.cilinOPD.entity.Schedule;
+
+
+public interface IScheduleService {
+	
+	public List<Schedule> getAll();
+	
+	public Schedule updateSchedule(ScheduleDTO Sdto);
+	
+	public Optional<Schedule> findById(long scheduleId);
+
+}

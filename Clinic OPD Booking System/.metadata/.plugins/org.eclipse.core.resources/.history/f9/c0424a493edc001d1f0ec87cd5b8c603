@@ -1,0 +1,19 @@
+package com.hdfc.cilinOPD.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Entity.Appointment;
+import com.hdfc.cilinOPD.Entity.Doctor;
+import com.hdfc.cilinOPD.Entity.Patient;
+
+@Service
+public interface IAppointmentService {
+	
+	public Appointment bookAppointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime);
+
+	 public List<Appointment> getAvailableAppointments(Doctor doctor, LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+}

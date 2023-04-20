@@ -1,0 +1,23 @@
+package com.hdfc.cilinOPD.Appointment.repository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.hdfc.cilinOPD.Appointment.VO.Doctor;
+import com.hdfc.cilinOPD.Appointment.entity.Appointment;
+
+@Repository
+public interface AppointmentRepository extends JpaRepository<Appointment ,Long> {
+
+	public List<Appointment> findByDoctorIdAndDate(Long doctorId, LocalDate date);
+
+	public List<Appointment> findByPatientIdAndDate(Long patientId, LocalDate date);
+
+	public List<Appointment> findByDoctorAndAppointmentTimeBetween(Doctor doctor, LocalDateTime start,
+			LocalDateTime end);
+
+}

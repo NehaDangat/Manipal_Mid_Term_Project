@@ -1,0 +1,47 @@
+package com.hdfc.cilinOPD.restController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.Entity.Appointment;
+import com.hdfc.cilinOPD.Entity.AppointmentRequest;
+import com.hdfc.cilinOPD.Entity.Doctor;
+import com.hdfc.cilinOPD.Entity.Patient;
+import com.hdfc.cilinOPD.service.IAppointmentService;
+
+@RestController
+@RequestMapping("/appointments")
+public class AppointmentController {
+
+	@Autowired
+    private IAppointmentService appointmentService;
+
+    @GetMapping
+    public List<Appointment> getAvailableAppointments(@RequestParam Long doctorId, @RequestParam String startDateTime, @RequestParam String endDateTime) {
+        Doctor doctor = new Doctor();
+        doctor.setDocotrId(doctorId);
+        LocalDateTime startDate = LocalDateTime.parse(startDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime endDate = LocalDateTime.parse(endDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return appointmentService.getAvailableAppointments(doctor, startDate, endDate);
+    }
+
+    @PostMapping
+    public void bookAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        Doctor doctor = new Doctor();
+        doctor.setDocotrId(appointmentRequest.getDoctorId());
+        Patient patient = new Patient();
+        patient.setPatientId(appointmentRequest.getPatientId());
+      // LocalDateTime dateTime = LocalDateTime.parse(appointmentRequest.getDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        appointmentService.bookAppointment(doctor, patient);
+    }
+	
+}

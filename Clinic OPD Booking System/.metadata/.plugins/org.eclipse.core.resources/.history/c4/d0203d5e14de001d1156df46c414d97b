@@ -1,0 +1,13 @@
+package com.hdfc.cilinOPD.Queue;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ClinicOpdBookingSystemQueueApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ClinicOpdBookingSystemQueueApplication.class, args);
+	}
+
+}

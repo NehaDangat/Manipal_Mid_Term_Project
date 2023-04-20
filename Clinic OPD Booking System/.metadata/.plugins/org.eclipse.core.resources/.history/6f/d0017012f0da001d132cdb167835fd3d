@@ -1,0 +1,11 @@
+package com.hdfc.cilinOPD.Appointment.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.hdfc.cilinOPD.entity.Queue;
+
+@Repository
+public interface QueueRepository extends JpaRepository<Queue, Long> {
+
+}

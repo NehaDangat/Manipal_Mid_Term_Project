@@ -1,0 +1,100 @@
+package com.hdfc.cilinOPD.Patient.restController;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.Patient.VO.Appointment;
+import com.hdfc.cilinOPD.Patient.VO.Doctor;
+import com.hdfc.cilinOPD.Patient.entity.Patient;
+import com.hdfc.cilinOPD.Patient.exception.PatientNotFound;
+import com.hdfc.cilinOPD.Patient.service.IPatientService;
+import com.hdfc.cilinOPD.PatientDTO.PatientDTO;
+
+@RestController
+@ComponentScan(basePackages = "com.hdfc.cilinOPD.Patient.entity")
+@RequestMapping("/patient")
+public class PatientRestController {
+	
+	@Autowired
+	IPatientService service;
+	
+	@PostMapping("/add")
+    public ResponseEntity<Patient> createPatient(@Valid @RequestBody PatientDTO patient) {
+        
+        return new ResponseEntity<>(service.addPatient(patient), HttpStatus.CREATED);
+    }
+	
+	@PutMapping("/update/{patientId}")
+	@Modifying
+	@Query("update clinic_opd.patient  set first_name = firstName , last_name = lastName , insurance_details = insuranceDetails , "
+			+ " contact =contact , medical_history = medicalHistory where patient_id = patientId")
+	public ResponseEntity<Patient> updatePatient(@RequestBody Patient Pdto) 
+	{
+		Patient updatePatient = service.updatePatient(Pdto);
+		
+		return new ResponseEntity<Patient>(updatePatient,HttpStatus.ACCEPTED);
+	}
+	
+	 @GetMapping("/get/{patientId}")
+	    public ResponseEntity<Patient> getPatientById(@PathVariable Long patientId) throws PatientNotFound {
+	       
+		 	Patient patient = service.getByPatientId(patientId);
+		 	
+	        return ResponseEntity.ok(patient);
+	       
+	 }
+	    
+	    @DeleteMapping("/delete/{patientId}")
+	    public ResponseEntity<String> deletePatient(@PathVariable long patientId) throws PatientNotFound {
+			
+	    	service.deletePatient(patientId);
+	    	
+	    	return new ResponseEntity<>("Patient Record Deleted ",HttpStatus.OK);
+	    	
+	    }
+	    
+	    @PostMapping("/bookAppointment")
+	    public ResponseEntity<Appointment> bookAppointment(@RequestBody Appointment appointment){
+	    	
+	    	return new ResponseEntity<>(service.bookAppointment(appointment), HttpStatus.CREATED);
+	    }
+	    
+	    @GetMapping("/getDoctorInfo")
+	    public List<Doctor> getDoctorInfoToPatient(){
+			
+	    	return service.getDoctorInfoToPatient();
+	    }
+	    
+	    @GetMapping("/viewMyAppointments/{patientId}")
+	    public List<Appointment> viewMyAppointments(Long patientId)
+	    {
+	    	return service.viewMyAppointments(patientId);
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	
+	
+	
+	
+
+}

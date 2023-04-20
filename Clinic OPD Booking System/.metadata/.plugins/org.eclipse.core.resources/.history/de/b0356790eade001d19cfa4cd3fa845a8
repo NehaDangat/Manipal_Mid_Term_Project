@@ -1,0 +1,16 @@
+package com.hdfc.cilinOPD.Reminder.DTO;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+public class ReminderDTO {
+
+	
+	private int reminderID;
+	private int appointmentID;
+	private String reminderType; 
+	private LocalDate reminderDate;
+	
+
+}

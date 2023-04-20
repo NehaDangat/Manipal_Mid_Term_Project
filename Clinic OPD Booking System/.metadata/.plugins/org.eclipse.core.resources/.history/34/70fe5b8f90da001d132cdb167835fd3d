@@ -1,0 +1,103 @@
+package com.hdfc.cilinOPD.Patient.restController;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.Patient.entity.Patient;
+import com.hdfc.cilinOPD.Patient.exception.ErrorResponse;
+import com.hdfc.cilinOPD.Patient.exception.PatientNotFound;
+import com.hdfc.cilinOPD.Patient.exception.ResourceNotFoundException;
+import com.hdfc.cilinOPD.Patient.service.IPatientService;
+import com.hdfc.cilinOPD.PatientDTO.PatientDTO;
+
+@RestController
+@RequestMapping("/patient")
+public class PatientRestController {
+	
+	@Autowired
+	IPatientService service;
+	
+	@PostMapping("/add")
+    public ResponseEntity<Patient> createPatient(@Valid @RequestBody PatientDTO patient) {
+        
+        return new ResponseEntity<>(service.addPatient(patient), HttpStatus.CREATED);
+    }
+	
+	@PutMapping("/update/{patientId}")
+	@Modifying
+	@Query("update clinic_opd.patient a set a.first_name = firstName,a.last_name = lastName , a.insurance_details = insuranceDetails , a.contact =contact ,"
+			+ "a.medical_history = medicalHistory where a.patient_id = patientId")
+	public ResponseEntity<Patient> updatePatient(@RequestBody Patient Pdto) throws PatientNotFound
+	{
+		Patient updatePatient = service.updatePatient(Pdto);
+		
+		return new ResponseEntity<Patient>(updatePatient,HttpStatus.ACCEPTED);
+	}
+	
+	 @GetMapping("/get/{patientId}")
+	    public ResponseEntity<Patient> getPatientById(@PathVariable Long patientId) {
+	       
+		 	Patient patient = service.getByPatientId(patientId);
+	        return ResponseEntity.ok(patient);
+	       
+	 }
+	
+	 @ExceptionHandler(MethodArgumentNotValidException.class)
+	    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+	        List<String> errors = ex.getBindingResult()
+	                .getAllErrors()
+	                .stream()
+	                .map(ObjectError::getDefaultMessage)
+	                .collect(Collectors.toList());
+	        ErrorResponse errorResponse = new ErrorResponse("Validation failed", errors);
+	        return ResponseEntity.badRequest().body(errorResponse);
+	    }
+
+	    @ExceptionHandler(ResourceNotFoundException.class)
+	    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+	        ErrorResponse errorResponse = new ErrorResponse("Resource not found", Collections.singletonList(ex.getMessage()));
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+	        
+	    }
+	    
+	    @DeleteMapping("/delete/patientId")
+	    public ResponseEntity<String> deletePatient(long patientId)throws PatientNotFound {
+			
+	    	service.deletePatient(patientId);
+	    	
+	    	return new ResponseEntity<>("Patient Record Deleted ",HttpStatus.OK);
+	    	
+	    }
+	 /*
+	    @GetMapping("/getDoctorInfo")
+	    public List<Doctor> getDoctorInfoToPatient(){
+	    	
+	    	return service.getDoctorInfoToPatient(); 
+	    }
+	    */
+	    
+	
+	
+	
+
+}

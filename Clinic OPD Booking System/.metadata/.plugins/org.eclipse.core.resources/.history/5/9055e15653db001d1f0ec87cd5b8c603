@@ -1,0 +1,24 @@
+package com.hdfc.cilinOPD.Doctor.service;
+
+import java.util.List;
+
+import com.hdfc.cilinOPD.Doctor.DTO.DoctorDTO;
+import com.hdfc.cilinOPD.Doctor.entity.Doctor;
+import com.hdfc.cilinOPD.Doctor.exception.DoctorIDNotFound;
+
+
+@service
+public interface IDoctorService {
+	
+	public Doctor addDoctor(DoctorDTO Ddto);
+	
+	public Doctor updateDoctor(Doctor ddto) throws DoctorIDNotFound ;
+	
+	public void deleteByDoctorId (long doctorId);
+
+	public Doctor getByDoctorId(long doctorId);
+
+	public List<Doctor> getAll();
+		
+
+}

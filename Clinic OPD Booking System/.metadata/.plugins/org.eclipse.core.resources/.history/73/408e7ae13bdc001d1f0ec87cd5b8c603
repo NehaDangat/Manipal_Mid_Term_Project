@@ -1,0 +1,14 @@
+package com.hdfc.cilinOPD.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Entity.Appointment;
+
+@Service
+public interface IAppointmentService {
+	
+	public Appointment bookAppointment(Long doctorId, Long patientId, LocalDateTime appointmentTime);
+
+}

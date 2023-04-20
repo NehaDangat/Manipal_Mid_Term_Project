@@ -1,0 +1,33 @@
+package com.hdfc.cilinOPD.Appointment.entity;
+
+import java.sql.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+
+
+@Entity
+@Table(name ="reminders")
+public class Reminder {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long reminderId;
+	private long appointmentId;
+	private String reminderType;
+	private Date reminderDate;
+
+}

@@ -1,0 +1,29 @@
+package com.hdfc.cilinOPD.Queue.Service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Queue.DTO.QueueDTO;
+
+import com.hdfc.cilinOPD.Queue.VO.QueueReminder;
+import com.hdfc.cilinOPD.Queue.entity.Queue;
+
+
+
+
+@Service
+public interface IQueueService {
+	
+	public List<Queue> getAll();
+	
+	public Queue updateQueue(QueueDTO Qdto);
+
+	public Queue getAppointmentQueue();
+	
+	public  QueueReminder	getQueueByIdWithReminder(Long queueId);
+
+	public Queue getQueueById(Long queueId);
+
+
+}

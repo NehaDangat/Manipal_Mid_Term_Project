@@ -1,0 +1,107 @@
+package com.hdfc.cilinOPD.Reminder.service;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.hdfc.cilinOPD.Reminder.VO.Appointment;
+import com.hdfc.cilinOPD.Reminder.VO.ReminderAppointment;
+import com.hdfc.cilinOPD.Reminder.entity.Reminder;
+import com.hdfc.cilinOPD.Reminder.repository.IReminderRepository;
+
+@Service
+public class ReminderIMPService implements IReminderService {
+	
+	@Autowired
+	IReminderRepository repo;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	private JavaMailSender mailSender;
+
+	@Override
+	public List<Reminder> getAllReminder() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
+	}
+
+	@Override
+	public Reminder updateReminder(Reminder reminder) {
+		// TODO Auto-generated method stub
+		return repo.save(reminder);
+	}
+
+	@Override
+	public Reminder getReminderById(Long reminderId) {
+		// TODO Auto-generated method stub
+		return repo.findById(reminderId).orElse(null);
+	}
+
+	@Override
+	public ReminderAppointment getReminderByIdWithAppointment(Long reminderId) {
+		
+		
+		Reminder reminder = getReminderById(reminderId);
+			
+		long appointmentId = reminder.getAppointmentID();
+		
+		
+	Appointment appointment =  restTemplate.getForObject("http://localhost:2003/api/appointment/get/"+appointmentId, Appointment.class);
+
+
+		ReminderAppointment RemApp = new ReminderAppointment(reminder,appointment);
+
+		return RemApp;
+	}
+	
+	@Override
+	public String notificationSender(String toEmail, String body, String subject) {
+		
+		SimpleMailMassage message = new SmipleMailMassge();
+		
+		message.setFrom("nehadangat17@gmail.com");
+		message.setTo(toEmail);
+		message.setText(body);
+		message.setSubject(subject);
+		
+		mailSender.send(message);
+		
+		return "The Mail Send Successfully......";
+	}
+	
+	@Override
+	public String sendMailToAllAppointment(LocalDate date) {
+		
+		List<Appointment> appointments = restTemplate.getForObject("http://localhost:2003/api/appointment/getAppointmentByDate"+date, List.class);
+		
+		int size = appointments.size();
+		
+		String response="";
+		
+		for(int i = 0 ; i< size ; i++) {
+			
+			String actualStatus = appointments.get(i).getStatus();
+		
+			String confirmedStatus = "Confirmed";
+			String pendingStatus = "Pending";
+			String cancleStatus = "Cancled";
+			String rescheduleStatus = "Rescheduled";
+			
+			if(actualStatus.equalsIgnoreCase(confirmedStatus)) {
+				
+				//response = notificationSender(appointments.get(i).getEmail(),body:"You Have An Appointment on :" + appointments.get(i).getDate()+"" );
+			}
+		}
+		
+		return  response;
+	}
+	
+	
+
+}

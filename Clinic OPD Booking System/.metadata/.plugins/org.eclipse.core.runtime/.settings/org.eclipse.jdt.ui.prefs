@@ -1,0 +1,13 @@
+breadcrumb.org.eclipse.jdt.ui.JavaPerspective=true
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="com.hdfc.cilinOPD.entity.patient"><rhs name\="com.hdfc.cilinOPD.entity.patient"/></lhs><lhs name\="org.springframework.http.HttpEntity"><rhs name\="org.springframework.http.ResponseEntity"/></lhs><lhs name\="org.springframework.http.ResponseEntity"><rhs name\="org.springframework.http.ResponseEntity"/></lhs><lhs name\="com.hdfc.cilinOPD.entity.Doctor"><rhs name\="com.hdfc.cilinOPD.entity.Doctor"/></lhs><lhs name\="com.hdfc.cilinOPD.entity.Schedule"><rhs name\="com.hdfc.cilinOPD.entity.Schedule"/></lhs><lhs name\="com.hdfc.cilinOPD.entity.Queue"><rhs name\="com.hdfc.cilinOPD.entity.Queue"/></lhs><lhs name\="com.hdfc.cilinOPD.entity.Appointment"><rhs name\="com.hdfc.cilinOPD.entity.Appointment"/></lhs><lhs name\="com.hdfc.cilinOPD.VO.AppoinmentDoctor"><rhs name\="com.hdfc.cilinOPD.VO.AppoinmentDoctor"/></lhs><lhs name\="java.lang.Enum"><rhs name\="org.springframework.http.HttpStatus"/></lhs><lhs name\="java.lang.constant.Constable"><rhs name\="org.springframework.http.HttpStatus"/></lhs><lhs name\="com.hdfc.cilinOPD.Patient.VO.PatientDotcor"><rhs name\="com.hdfc.cilinOPD.Patient.VO.PatientDotcor"/></lhs><lhs name\="com.hdfc.cilinOPD.Patient.entity.Patient"><rhs name\="com.hdfc.cilinOPD.Patient.entity.Patient"/></lhs><lhs name\="java.util.Date"><rhs name\="java.sql.Date"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.sql.Date"/></lhs><lhs name\="java.sql.Date"><rhs name\="java.sql.Date"/></lhs><lhs name\="com.hdfc.cilinOPD.Schedule.entity.Schedule"><rhs name\="com.hdfc.cilinOPD.Schedule.entity.Schedule"/></lhs></history>
+content_assist_number_of_computers=14
+content_assist_proposals_background=255,255,255
+content_assist_proposals_foreground=0,0,0
+eclipse.preferences.version=1
+org.eclipse.jdt.internal.ui.navigator.layout=2
+org.eclipse.jdt.internal.ui.navigator.librariesnode=true
+org.eclipse.jdt.ui.formatterprofiles.version=23
+spelling_locale_initialized=true
+typefilter_migrated_2=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

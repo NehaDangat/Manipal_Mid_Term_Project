@@ -1,0 +1,158 @@
+package com.hdfc.cilinOPD.appointment.restConrtoller;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.appointment.DTO.AppointmentDTO;
+import com.hdfc.cilinOPD.appointment.entity.Appointment;
+import com.hdfc.cilinOPD.appointment.exception.AppointmentNotFound;
+import com.hdfc.cilinOPD.appointment.exception.AppointmentNotFoundException;
+import com.hdfc.cilinOPD.appointment.service.IAppointmentService;
+
+
+@RestController
+@RequestMapping("/appointment")
+public class AppointmentRestController {
+	
+	@Autowired
+	IAppointmentService service;
+	
+	//@Autowired
+	//EmailService emailService;
+	
+	
+	@PostMapping("/add")
+    public ResponseEntity<Appointment> creatAppointment(@RequestBody AppointmentDTO appointment ) {
+        
+        return new ResponseEntity<>(service.bookAppointment(appointment), HttpStatus.CREATED);
+    }
+	
+	@PutMapping("/update/{appointmentId}")
+	@Modifying
+	@Query("update clinic_opd.appointment set patient_id  = patientId ,doctor_id = doctorId , appoinment_date = date , appoinment_time = time ,"
+		+ "status = status ,where appointmentId  = appointmentId ")
+	public ResponseEntity<Appointment> updateAppointment(@RequestBody Appointment Adto) 
+	{
+		Appointment updateAppointment = service.upadteAppointment(Adto);
+		
+		return new ResponseEntity<Appointment>(updateAppointment,HttpStatus.ACCEPTED);
+	}
+	
+
+	@GetMapping("/get/{appointmentId}")
+    public ResponseEntity<Appointment> getAppointmentById(@PathVariable Long appointmentId) throws AppointmentNotFound {
+       
+	 	Appointment appointment  = service.getAppointmentById(appointmentId);
+	 	
+        return ResponseEntity.ok(appointment);
+	}
+	
+	 @DeleteMapping("/delete/{appointmentId}")
+	    public ResponseEntity<String> deletePatient(@PathVariable long appointmentId) throws AppointmentNotFound {
+			
+	    	service.deleteAppointment(appointmentId);
+	    	
+	    	return new ResponseEntity<>("Appointment Record Deleted ",HttpStatus.OK);
+	    	
+	    }
+	 
+	 @GetMapping("getAppointment/{appointmentId}")
+	    public Appointment getAppointment(@PathVariable Long appointmentId) throws AppointmentNotFoundException {
+	        Appointment appointment = service.getAppointment(appointmentId);
+	        // send appointment reminder notification via SMS or email
+	        return appointment;
+	    }
+	 
+	 @GetMapping("/getAppointmentByPatient/{patientId}")
+		public List<Appointment> getAppointmentsByPatientAndDateRange(@PathVariable Long patientId){
+			
+			return service.getAppointmentsByPatient(patientId );
+			
+		}
+	 
+	@PutMapping("/updateStatus/{appointmentId}/{status}")
+	@Modifying
+	@Query("update clinic_opd.appointment set status = status ,where appointmentId  = appointmentId ")
+	 public Appointment updateAppointmentStatus(@PathVariable long appointmentId, @RequestParam String status) {
+		
+		return service.updateAppointmentStatus(appointmentId, status);
+	
+	}
+	/*
+	@GetMapping("/getAppointmentByDoctor/{doctorId}/{date}")
+	@Query("select * from clinic_opd.appointment where doctor_id = doctorId  && date = date")
+	public List<Appointment> getAppointmentsByDoctorAndDateRange(@PathVariable Long doctorId ,@RequestParam Date date){
+		
+		
+		return service.getAppointmentsByDoctorAndDateRange(doctorId,date);
+		
+		
+	}
+	*/
+	
+	@GetMapping("/getAppointmentByDoctor/{doctorId}")
+	public List<Appointment> getAppointmentsByDoctorAndDateRange(@PathVariable Long doctorId, @RequestParam ("date") LocalDate date) {
+	    return service.getAppointmentsByDoctorAndDateRange(doctorId, date);
+	}
+	
+	
+	  //Patient Queue Management:
+	  
+	  @GetMapping("/queue")
+	    public List<Appointment> getAppointmentQueue() {
+	        List<Appointment> appointmentQueue = service.getAppointmentQueue();
+	        // prioritize urgent cases in appointment queue
+	        return appointmentQueue;
+	    }
+	  /*
+	  //Cancellation and Rescheduling:
+	  
+	  @DeleteMapping("/{id}")
+	    public void cancelAppointment(@PathVariable Long id) {
+	        service.cancelAppointment(id);
+	        // send cancellation notification to doctors and staff via SMS or email
+	    }
+	    
+	    @PutMapping("/{id}")
+	    public Appointment rescheduleAppointment(@PathVariable Long id, @RequestBody Appointment appointment) throws AppointmentNotFoundException {
+	        Appointment rescheduledAppointment = service.rescheduleAppointment(id, appointment);
+	        // send rescheduling notification to doctors and staff via SMS or email
+	        return rescheduledAppointment;
+	    }
+	    
+	    //Reminders and Notifications:
+	    
+	    @PostMapping("/create")
+	    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
+	        Appointment createdAppointment = service.createAppointment(appointment);
+	      
+	        
+	        // send a reminder via email
+	        String subject = "Appointment Reminder: " + appointment.getDate() + " at " + appointment.getTime();
+	        String text = "Dear " + appointment.getAppointmentId() + ",\n\nThis is a reminder that you have an appointment with Dr. " + appointment.getDoctorId()+ " on " + appointment.getDate() + " at " + appointment.getTime() + ". Please arrive on time.\n\nSincerely,\nThe Appointment System";
+	        EmailService emailService = new EmailService();
+			emailService.sendEmail(appointment.getAppointmentId(), subject, text);
+	        
+	        return ResponseEntity.created(createdAppointment.getUri()).body(createdAppointment);
+	    }
+	    */
+	   
+}

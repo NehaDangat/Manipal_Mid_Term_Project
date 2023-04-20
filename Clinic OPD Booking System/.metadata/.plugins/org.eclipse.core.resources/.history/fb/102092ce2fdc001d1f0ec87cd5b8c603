@@ -1,0 +1,16 @@
+package com.hdfc.cilinOPD.appointments.repository;
+
+import javax.validation.Valid;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.hdfc.cilinOPD.appointments.DTO.AppointmentDTO;
+import com.hdfc.cilinOPD.appointments.entity.Appointment;
+
+@Repository
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+
+	public Appointment save(@Valid AppointmentDTO adto);
+
+}

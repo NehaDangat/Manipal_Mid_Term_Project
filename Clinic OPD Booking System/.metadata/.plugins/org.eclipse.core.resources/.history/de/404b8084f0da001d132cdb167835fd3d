@@ -1,0 +1,29 @@
+package com.hdfc.cilinOPD.Appointment.restController;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.entity.Reminder;
+import com.hdfc.cilinOPD.service.IReminderService;
+
+@RestController
+
+@RequestMapping("/reminder")
+public class ReminderRestController {
+	
+	@Autowired
+	IReminderService service;
+	
+	@GetMapping("/getAll")
+	public List<Reminder> getAll(){
+		
+		return service.getAll(); 
+		
+	}
+	
+
+}

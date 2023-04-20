@@ -1,0 +1,50 @@
+package com.hdfc.cilinOPD.Queue.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.hdfc.cilinOPD.Queue.DTO.QueueDTO;
+import com.hdfc.cilinOPD.Queue.VO.Appointment;
+import com.hdfc.cilinOPD.Queue.entity.Queue;
+import com.hdfc.cilinOPD.Queue.repository.QueueRepository;
+
+
+@Service
+public class QueueServiceImp implements IQueueService {
+
+	@Autowired
+	QueueRepository repo;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Override
+	public List<Queue> getAll() {
+		
+		return repo.findAll();
+	}
+
+	@Override
+	public Queue updateQueue(QueueDTO Qdto) {
+		
+		Queue queue = new Queue();
+		
+		queue.setAppointmentId(Qdto.getAppointmentId());
+		queue.setQueueNumber(Qdto.getQueueNo());
+		queue.setQueueStatus(Qdto.getQueueStatus());
+		
+		return repo.save(queue);
+	}
+
+	@Override
+	public List<Appointment> getAppointmentQueue() {
+		
+		List<Appointment> appointments =  restTemplate.getForObject("http://localhost:2003/api/appointment/upComingQueue", List.class);
+		
+		return appointments;
+	}
+
+}

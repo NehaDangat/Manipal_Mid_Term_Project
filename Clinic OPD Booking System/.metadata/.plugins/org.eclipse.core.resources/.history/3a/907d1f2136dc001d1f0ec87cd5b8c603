@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.service;
+
+public interface IAppointmentService {
+
+}

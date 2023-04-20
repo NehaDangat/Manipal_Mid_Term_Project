@@ -1,0 +1,10 @@
+package com.hdfc.cilinOPD.appointment.service;
+
+public class JavaMailSender {
+
+	public void send(SimpleMailMessage message) {
+		
+		
+	}
+
+}

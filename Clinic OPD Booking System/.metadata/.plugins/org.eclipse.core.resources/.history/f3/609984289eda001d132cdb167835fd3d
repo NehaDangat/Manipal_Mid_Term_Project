@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.Patient.exception;
+
+public class ResourceNotFoundException extends Throwable{
+
+}

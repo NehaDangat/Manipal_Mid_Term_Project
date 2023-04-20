@@ -1,0 +1,157 @@
+package com.hdfc.cilinOPD.Appointment.service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Appointment.entity.Appointment;
+import com.hdfc.cilinOPD.Appointment.entity.Appointment.AppointmentStatus;
+import com.hdfc.cilinOPD.Appointment.exception.AppointmentNotFoundException;
+import com.hdfc.cilinOPD.Appointment.repository.AppointmentRepository;
+
+@Service
+public class AppointmentServiceImp implements IAppointmentService {
+	
+	@Autowired
+	AppointmentRepository repo;
+	
+	@Override
+	public Appointment bookAppointment(Appointment appointment) {
+		
+		//Doctor doctor = new Doctor();
+	
+		//Patient patient = new Patient();
+        
+        //Appointment appointment = new Appointment();
+        //appointment.setDoctor(doctor);
+       // appointment.setPatient(patient);
+       // appointment.setDate(appointmentDto.getDate());
+        //appointment.setTime(appointmentDto.getTime());
+       // appointment.setStatus(appointmentDto.getStatus());
+        //appointment.setPatientId(appointmentDto.getPatientId());
+       // appointment.setPatientId(appointmentDto.getDoctorId());
+        
+        return repo.save(appointment);
+	}
+	
+	@Override
+	public Appointment upadteAppointment(Appointment Adto) {
+		
+		Optional<Appointment> opt = repo.findById(Adto.getAppointmentId());
+		
+		//Appointment app = null;
+		
+		if(opt.isPresent()) {
+			
+			/*
+			Doctor doctor = new Doctor();
+			
+			Patient patient = new Patient();
+	        
+	        Appointment appointment1 = new Appointment();
+	        appointment1.setDoctor(doctor);
+	        appointment1.setPatient(patient);
+	        appointment1.setDate(Adto.getDate());
+	        appointment1.setTime(Adto.getTime());
+	        appointment1.setStatus(Adto.getStatus());
+			
+			app = repo.save(appointment1);
+			*/
+			
+			return repo.save(Adto);
+		}
+		return Adto;
+	}
+
+	@Override
+    public Appointment getAppointmentById(Long appointmentId) {
+        return repo.findById(appointmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment not found with id " + appointmentId));
+    }
+	
+	@Override
+	public List<Appointment> getAppointmentsByDoctorAndDateRange(Long doctorId, LocalDate date) {
+		// TODO Auto-generated method stub
+		
+		LocalDateTime start = date.atStartOfDay();
+	    LocalDateTime end = start.plusDays(1);
+	    //Doctor doctor = repo.findById(doctorId).orElse(null);
+	    //if (doctor != null) {
+	    //    return repo.findByDoctorAndAppointmentTimeBetween(doctor, start, end);
+	   //}
+	    return Collections.emptyList();
+		//return repo.findByPatientIdAndDate(doctorId, date);
+	}
+
+	@Override
+	public List<Appointment> getAppointmentsByPatientAndDateRange(Long patientId, LocalDate date) {
+		// TODO Auto-generated method stub
+		return repo.findByPatientIdAndDate(patientId, date);
+	}
+
+	
+	@Override
+    public Appointment updateAppointmentStatus(Long appointmentId, AppointmentStatus status) {
+        Appointment appointment = getAppointmentById(appointmentId);
+        appointment.setStatus(status);
+        return repo.save(appointment);
+    }
+
+	@Override
+	public void deleteAppointment(long appointmentId) {
+		
+		repo.deleteById(appointmentId);
+	}
+
+	@Override
+	public List<Appointment> getAppointmentQueue() {
+		
+		List<Appointment> appointmentQueue = repo.findAll();
+        
+        return appointmentQueue;
+		
+	}
+
+	@Override
+	public void cancelAppointment(Long id) {
+		
+		repo.deleteById(id);
+		
+	}
+
+	@Override
+	public Appointment rescheduleAppointment(Long id, Appointment appointment) throws AppointmentNotFoundException {
+		
+		Appointment oldAppointment = repo.findById(id)
+                .orElseThrow(() -> new AppointmentNotFoundException(id));
+		
+        // update oldAppointment with appointment data
+        Appointment updatedAppointment = repo.save(oldAppointment);
+        return updatedAppointment;
+        
+	}
+
+	@Override
+	public Appointment createAppointment(Appointment appointment) {
+		
+		return repo.save(appointment);
+		
+	}
+
+	@Override
+	public Appointment getAppointment(Long appointmentId) throws AppointmentNotFoundException {
+		
+		return repo.findById(appointmentId)
+                .orElseThrow(() -> new AppointmentNotFoundException(appointmentId));
+	}
+
+	
+    
+}

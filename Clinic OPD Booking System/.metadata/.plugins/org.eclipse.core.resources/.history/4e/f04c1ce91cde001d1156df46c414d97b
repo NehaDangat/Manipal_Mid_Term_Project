@@ -1,0 +1,21 @@
+package com.hdfc.cilinOPD.Queue.Service;
+
+import java.util.List;
+import java.util.Queue;
+
+import com.hdfc.cilinOPD.Queue.DTO.QueueDTO;
+import com.hdfc.cilinOPD.Queue.VO.Appointment;
+import com.hdfc.cilinOPD.Queue.entity.*;
+
+
+
+
+public interface IQueueService {
+	
+	public List<Queue> getAll();
+	
+	public Queue updateQueue(QueueDTO Qdto);
+
+	public com.hdfc.cilinOPD.Queue.entity.Queue getAppointmentQueue();
+
+}

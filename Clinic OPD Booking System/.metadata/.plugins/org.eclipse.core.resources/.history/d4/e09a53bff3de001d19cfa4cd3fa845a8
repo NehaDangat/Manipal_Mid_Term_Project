@@ -1,0 +1,13 @@
+package com.hdfc.cilinOPD.Schedule;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ClinicOpdBookingSystemScheduleApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ClinicOpdBookingSystemScheduleApplication.class, args);
+	}
+
+}

@@ -1,0 +1,39 @@
+package com.hdfc.cilinOPD.Patient.VO;
+
+import com.hdfc.cilinOPD.Patient.entity.Patient;
+
+public class PatientDotcor {
+	
+	private Patient patient;
+	private Doctor doctor;
+	
+	public PatientDotcor() {
+		super();
+	}
+
+	public PatientDotcor(Patient patient1, Doctor doctor) {
+		super();
+		this.patient = patient1;
+		this.doctor = doctor;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+	
+	
+	
+
+}

@@ -1,0 +1,30 @@
+package com.hdfc.cilinOPD.appointmentsrestController;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.appointments.DTO.AppointmentDTO;
+import com.hdfc.cilinOPD.appointments.entity.Appointment;
+import com.hdfc.cilinOPD.appointments.service.IAppointmentService;
+
+@RestController
+@RequestMapping("/appointments")
+public class AppointmentRestController {
+	
+	@Autowired
+	IAppointmentService service;
+	
+	@PostMapping("/bookAppointment")
+	public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody AppointmentDTO Adto)
+	{
+		return new ResponseEntity<>(service.bookAppointment(Adto));
+	}
+	
+
+}

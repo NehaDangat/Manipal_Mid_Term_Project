@@ -1,0 +1,32 @@
+package com.hdfc.cilinOPD.Appointment.VO;
+
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+
+@Entity
+public class Patient {
+	
+	@Id
+	private long patientId;
+	private String firstName;
+	private String lastName;
+	private String contact;
+    private String medicalHistory;
+    private String insuranceDetails;
+    @ManyToOne
+    private List<Doctor> doctor;
+
+}

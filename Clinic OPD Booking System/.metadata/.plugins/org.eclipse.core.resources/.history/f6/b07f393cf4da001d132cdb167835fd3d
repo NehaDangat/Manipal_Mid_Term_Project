@@ -1,0 +1,23 @@
+package com.hdfc.cilinOPD.Appointment.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.StreamingHttpOutputMessage.Body;
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Appointment.exception.TwilioRestException;
+import com.mysql.cj.protocol.Message;
+
+@Service
+public class SmsService {
+
+    @Autowired
+    private TwilioConfig twilioConfig;
+
+    public void sendSms(String to, String body) throws TwilioRestException {
+        TwilioRestClient client = new TwilioRestClient.Builder(twilioConfig.getAccountSid(), twilioConfig.getAuthToken()).build();
+        Message message = new Message.Builder(twilioConfig.getFromNumber(), new PhoneNumber(to))
+                .body(new Body.Builder(body).build())
+                .build();
+        client.messages().create(message);
+    }
+}

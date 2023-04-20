@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.Reminder.service;
+
+public class EmailSenderService {
+
+}

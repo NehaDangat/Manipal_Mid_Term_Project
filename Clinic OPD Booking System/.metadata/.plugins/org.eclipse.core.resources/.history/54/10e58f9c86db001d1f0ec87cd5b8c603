@@ -1,0 +1,40 @@
+package com.hdfc.cilinOPD.Appointment.service;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import com.hdfc.cilinOPD.Appointment.entity.Appointment;
+import com.hdfc.cilinOPD.Appointment.entity.Appointment.AppointmentStatus;
+import com.hdfc.cilinOPD.Appointment.exception.AppointmentNotFoundException;
+
+public interface IAppointmentService {
+	
+	public Appointment bookAppointment(@Valid Appointment appointment);
+	
+	public Appointment upadteAppointment(Appointment Adto);
+	
+	public Appointment getAppointmentById(Long appointmentId);
+
+	public Appointment updateAppointmentStatus(Long appointmentId, AppointmentStatus status);
+	
+	public List<Appointment> getAppointmentsByDoctorAndDateRange(Long doctorId, LocalDate date);
+
+	public List<Appointment> getAppointmentsByPatientAndDateRange(Long patientId, LocalDate date);
+	
+	public void deleteAppointment (long appointmentId);
+
+	public List<Appointment> getAppointmentQueue();
+
+	public void cancelAppointment(Long appointmentId);
+
+	public Appointment rescheduleAppointment(Long id, Appointment appointment) throws AppointmentNotFoundException;
+
+	public Appointment createAppointment(Appointment appointment);
+
+	public Appointment getAppointment(Long appointmentId) throws AppointmentNotFoundException;
+	
+	
+}

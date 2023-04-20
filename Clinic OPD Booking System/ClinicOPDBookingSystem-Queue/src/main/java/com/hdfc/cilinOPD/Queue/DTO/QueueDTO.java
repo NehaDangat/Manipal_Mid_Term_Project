@@ -1,0 +1,21 @@
+package com.hdfc.cilinOPD.Queue.DTO;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+
+public class QueueDTO {
+
+	private long queueID;
+	private long appointmentId;
+	private long queueNo;
+	private String queueStatus;
+	
+	
+}

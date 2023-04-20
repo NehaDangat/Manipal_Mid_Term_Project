@@ -1,0 +1,13 @@
+package com.hdfc.cilinOPD.Reminder;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ClinicOpdBookingSystemReminderApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ClinicOpdBookingSystemReminderApplication.class, args);
+	}
+
+}

@@ -1,0 +1,28 @@
+package com.hdfc.cilinOPD.appointment.DTO;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+
+public class AppoinmentDTO {
+	
+    private long appointmentId;
+	private long patientId;
+	private long doctorId;
+	private LocalDate date;
+    private LocalTime time;
+	private String status;
+	
+	
+	
+
+}

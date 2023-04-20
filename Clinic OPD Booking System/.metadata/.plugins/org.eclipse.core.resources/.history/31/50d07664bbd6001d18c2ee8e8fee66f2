@@ -1,0 +1,76 @@
+package com.hdfc.cilinOPD.restController;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hdfc.cilinOPD.DTO.AppoinmentDTO;
+import com.hdfc.cilinOPD.VO.PatientAppointment;
+import com.hdfc.cilinOPD.entity.Appointment;
+import com.hdfc.cilinOPD.exception.AppointmentNotFound;
+import com.hdfc.cilinOPD.service.IAppoinmentService;
+
+
+@RestController
+
+@RequestMapping("/appointment")
+public class AppointmentRestController {
+	
+	@Autowired
+	IAppoinmentService service;
+	
+	@PostMapping("/add")
+	public Appointment addAppointment(@RequestBody AppoinmentDTO Adto)
+	{
+		return service.addAppointment(Adto);
+	}
+	
+	@PutMapping("/update/{appointmentId}")
+	@Modifying
+	@Query("update clinic_opd.appointment a set a.patient_id = patientId ,a.doctor_id = doctorId, a.appoinment_date= appoinmentDate ,"
+			+ "a.appoinment_time = appoinmentTime,a.status = status where a.appointment_id =appointmentId  ")
+	public ResponseEntity<Appointment> updateAppointment(@Valid @RequestBody Appointment Adto) throws AppointmentNotFound
+	{
+		Appointment updateAppointment = service.updateAppointment(Adto);
+		
+		
+	
+		return new ResponseEntity<Appointment>(updateAppointment,HttpStatus.ACCEPTED);
+	}
+	
+	@DeleteMapping("/delete/{appointmentId}")
+	public ResponseEntity<String> deleteAppointment(@PathVariable long appointmentId) throws AppointmentNotFound
+	{
+		service.deleteAppointmentById(appointmentId);
+		
+		return new ResponseEntity<>("Appointment Delete" , HttpStatus.OK);
+	}
+	
+	@GetMapping("/getAppointment/{doctorId}")
+	public List<Appointment> getAppointmentByDoctorId(@PathVariable long doctorId ) throws AppointmentNotFound{
+		
+		return service.getByDoctorId(doctorId);
+		
+	}
+	
+	@GetMapping("/get/{appointmentId}")
+	public PatientAppointment getPatientByAppointmentId(@PathVariable long appointmentId) throws AppointmentNotFound {
+		
+		return service.getPatientByAppointmentId(appointmentId);
+	}
+
+}

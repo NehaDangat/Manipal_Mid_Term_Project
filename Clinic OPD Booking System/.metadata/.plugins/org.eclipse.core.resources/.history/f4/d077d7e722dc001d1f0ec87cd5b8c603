@@ -1,0 +1,140 @@
+package com.hdfc.cilinOPD.appointment.service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.hdfc.cilinOPD.appointment.DTO.AppoinmentDTO;
+import com.hdfc.cilinOPD.appointment.entity.Appointment;
+import com.hdfc.cilinOPD.appointment.entity.Appointment.AppointmentStatus;
+import com.hdfc.cilinOPD.appointment.entity.Doctor;
+import com.hdfc.cilinOPD.appointment.exception.AppointmentNotFoundException;
+import com.hdfc.cilinOPD.appointment.repository.AppointmentRepository;
+
+@Service
+public class AppointmentServiceImp implements IAppointmentService {
+	
+	@Autowired
+	AppointmentRepository repo;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Override
+	public Appointment bookAppointment(AppoinmentDTO appointment, String doctorId) {
+        
+		Appointment appointment1 = new Appointment();
+		
+		appointment.setAppointmentId(appointment.getAppointmentId());
+		appointment.setPatientId(appointment.getPatientId());
+		appointment.setDoctorId(restTemplate.getForObject("http://localhost:2002/doctor/get/"+doctorId, Doctor.class));
+		
+		return repo.save(appointment1);
+	}
+	
+	@Override
+	public Appointment upadteAppointment(Appointment Adto) {
+		
+		Optional<Appointment> opt = repo.findById(Adto.getAppointmentId());
+		
+		if(opt.isPresent()) {
+			
+			return repo.save(Adto);
+			
+		}
+		return Adto;
+	}
+
+	@Override
+    public Appointment getAppointmentById(Long appointmentId) {
+        return repo.findById(appointmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment not found with id " + appointmentId));
+    }
+	
+	@Override
+	public List<Appointment> getAppointmentsByDoctorAndDateRange(Long doctorId, LocalDate date) {
+		// TODO Auto-generated method stub
+		
+		LocalDateTime start = date.atStartOfDay();
+	    LocalDateTime end = start.plusDays(1);
+	    //Doctor doctor = repo.findById(doctorId).orElse(null);
+	    //if (doctor != null) {
+	    //    return repo.findByDoctorAndAppointmentTimeBetween(doctor, start, end);
+	   //}
+	    return Collections.emptyList();
+		//return repo.findByPatientIdAndDate(doctorId, date);
+	}
+/*
+	@Override
+	public List<Appointment> getAppointmentsByPatient(Long patientId) {
+		// TODO Auto-generated method stub
+		return repo.findByPatientId(patientId);
+	}
+*/
+	
+	@Override
+    public Appointment updateAppointmentStatus(Long appointmentId, AppointmentStatus status) {
+        Appointment appointment = getAppointmentById(appointmentId);
+        appointment.setStatus(status);
+        return repo.save(appointment);
+    }
+
+	@Override
+	public void deleteAppointment(long appointmentId) {
+		
+		repo.deleteById(appointmentId);
+	}
+
+	@Override
+	public List<Appointment> getAppointmentQueue() {
+		
+		List<Appointment> appointmentQueue = repo.findAll();
+        
+        return appointmentQueue;
+		
+	}
+
+	@Override
+	public void cancelAppointment(Long id) {
+		
+		repo.deleteById(id);
+		
+	}
+
+	@Override
+	public Appointment rescheduleAppointment(Long id, Appointment appointment) throws AppointmentNotFoundException {
+		
+		Appointment oldAppointment = repo.findById(id)
+                .orElseThrow(() -> new AppointmentNotFoundException(id));
+		
+        // update oldAppointment with appointment data
+        Appointment updatedAppointment = repo.save(oldAppointment);
+        return updatedAppointment;
+        
+	}
+
+	@Override
+	public Appointment createAppointment(Appointment appointment) {
+		
+		return repo.save(appointment);
+		
+	}
+
+	@Override
+	public Appointment getAppointment(Long appointmentId) throws AppointmentNotFoundException {
+		
+		return repo.findById(appointmentId)
+                .orElseThrow(() -> new AppointmentNotFoundException(appointmentId));
+	}
+
+	
+    
+}

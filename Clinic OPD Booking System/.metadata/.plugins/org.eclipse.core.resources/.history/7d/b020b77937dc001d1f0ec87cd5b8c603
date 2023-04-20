@@ -1,0 +1,72 @@
+package com.hdfc.cilinOPD.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.hdfc.cilinOPD.Entity.Doctor;
+import com.hdfc.cilinOPD.repository.DoctorRepository;
+
+@Service
+public class DoctorServiceImp implements IDoctorService {
+
+	@Autowired
+	DoctorRepository repo;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Override
+	public Doctor addDoctor(Doctor Ddto) {
+		
+		
+		Doctor doctor = new Doctor();
+	
+		doctor.setDocotrId(Ddto.getDocotrId());
+		doctor.setFirstName(Ddto.getFirstName());
+		doctor.setLastName(Ddto.getLastName());
+		doctor.setContact(Ddto.getContact());
+		doctor.setSpecialization(Ddto.getSpecialization());
+		
+		
+		return repo.save(doctor);
+	}
+
+	@Override
+	public Doctor updateDoctor(Doctor Ddto) throws DoctorIDNotFound {
+		
+		Optional<Doctor> opt = repo.findById(Ddto.getDocotrId());
+		
+		if(opt.isPresent()){
+			
+			return repo.save(Ddto);
+		} else {
+			
+			throw new DoctorIDNotFound();
+		}
+
+	}
+
+	@Override
+	public void deleteByDoctorId(long doctorId) {
+		
+		repo.deleteById(doctorId);
+		
+	}
+
+	@Override
+	public  Doctor getByDoctorId(long doctorId) {
+		
+		return repo.findById(doctorId).orElse(null);
+	}
+
+	@Override
+	public List<Doctor> getAll() {
+		
+		return repo.findAll();
+	}
+ 
+}

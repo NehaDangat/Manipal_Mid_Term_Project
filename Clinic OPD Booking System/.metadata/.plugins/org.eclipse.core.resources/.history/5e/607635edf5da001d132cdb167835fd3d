@@ -1,0 +1,20 @@
+package com.hdfc.cilinOPD.Appointment.service;
+
+public class SimpleMailMessage {
+
+	public void setTo(long l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSubject(String subject) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setText(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

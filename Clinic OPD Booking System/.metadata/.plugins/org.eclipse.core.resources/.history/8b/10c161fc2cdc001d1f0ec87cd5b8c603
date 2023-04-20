@@ -1,0 +1,11 @@
+package com.hdfc.cilinOPD.appointments.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.hdfc.cilinOPD.appointments.entity.Appointment;
+
+@Repository
+public class AppointmentRepository implements JpaRepository<Appointment, Long> {
+
+}

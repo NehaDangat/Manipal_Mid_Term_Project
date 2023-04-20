@@ -1,0 +1,13 @@
+package com.hdfc.cilinOPD.Appointment.VO;
+
+
+public class Patient {
+	
+	private long patientId;
+	private String firstName;
+	private String lastName;
+	private String contact;
+    private String medicalHistory;
+    private String insuranceDetails;
+
+}

@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.Appointment.service;
+
+public class SmsService {
+
+}

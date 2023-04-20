@@ -1,0 +1,21 @@
+package com.hdfc.cilinOPD.service;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Patient.DTO.PatientDTO;
+import com.hdfc.cilinOPD.Patient.entity.Patient;
+
+@Service
+public interface IPatientService {
+	
+	public Patient addPatient(PatientDTO Pdto);
+	
+	public Patient updatePatient(PatientDTO Pdto);
+
+	public void deletePatient(long patientId);
+	
+	public Patient getByPatientId(long patientId);
+	
+	//public Patient getPatientByAppointmentId(long appointmentId);
+
+}

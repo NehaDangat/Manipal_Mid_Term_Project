@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.Entity;
+
+public class AppointmentRequest {
+
+}

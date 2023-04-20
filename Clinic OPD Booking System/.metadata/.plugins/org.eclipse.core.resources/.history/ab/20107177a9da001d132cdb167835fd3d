@@ -1,0 +1,14 @@
+package com.hdfc.cilinOPD.Patient.VO;
+
+
+
+
+public class Doctor {
+	
+	private long doctorId;
+	private String firstName;
+	private String lastName;
+	private String contact;
+	private String specialization;
+
+}

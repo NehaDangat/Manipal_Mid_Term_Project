@@ -1,0 +1,15 @@
+package com.hdfc.cilinOPD.Entity;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+
+public class AppointmentRequest {
+	
+	private Long doctorId;
+    private Long patientId;
+    private String dateTime;
+
+}

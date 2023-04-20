@@ -1,0 +1,24 @@
+package com.hdfc.cilinOPD.appointments.service;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.appointments.DTO.AppointmentDTO;
+import com.hdfc.cilinOPD.appointments.entity.Appointment;
+import com.hdfc.cilinOPD.appointments.repository.AppointmentRepository;
+
+@Service
+public class AppointmentIMPService implements IAppointmentService{
+
+	@Autowired
+	AppointmentRepository repo;
+	
+	@Override
+	public Appointment bookAppointment(@Valid AppointmentDTO Adto) {
+		
+		return repo.save(Adto);
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.hdfc.cilinOPD.Patient.VO;
+
+public class Doctor {
+
+}

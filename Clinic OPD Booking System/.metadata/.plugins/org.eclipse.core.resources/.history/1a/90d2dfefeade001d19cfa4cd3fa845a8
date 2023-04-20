@@ -1,0 +1,7 @@
+package com.hdfc.cilinOPD.Reminder.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IReminderRepository extends JpaRepository<Reminder, Long> {
+
+}

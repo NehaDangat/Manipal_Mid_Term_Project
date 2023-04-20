@@ -1,0 +1,13 @@
+package com.hdfc.cilinOPD.Appointment.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.entity.Reminder;
+
+public interface IReminderService {
+	
+	public List<Reminder> getAll();
+
+}

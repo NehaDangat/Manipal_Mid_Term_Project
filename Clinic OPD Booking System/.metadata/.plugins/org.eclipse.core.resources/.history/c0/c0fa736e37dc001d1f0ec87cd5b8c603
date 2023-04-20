@@ -1,0 +1,22 @@
+package com.hdfc.cilinOPD.service;
+
+import org.springframework.stereotype.Service;
+
+import com.hdfc.cilinOPD.Entity.Doctor;
+
+
+@Service
+public interface IDoctorService {
+	
+	public Doctor addDoctor(Doctor Ddto);
+	
+	/*public Doctor updateDoctor(Doctor ddto) throws DoctorIDNotFound ;
+	
+	public void deleteByDoctorId (long doctorId);
+
+	public Doctor getByDoctorId(long doctorId);
+
+	public List<Doctor> getAll();*/
+		
+
+}
